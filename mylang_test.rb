@@ -96,6 +96,7 @@ def test_program
   testcases = [
     ["fib.mylang", "55"],
     ["func.mylang", "6"],
+    ["sum.mylang", "6"],
     ["loop.mylang", "0\n1\n2\n3"],
   ]
   run_test("Interpreter", testcases, [*MY_LANG_EXE])
