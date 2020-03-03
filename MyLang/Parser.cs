@@ -284,7 +284,7 @@ namespace MyLang
         Ast.Exp parseExp0Rest(Ast.Exp lhs)
         {
             var t = currentToken();
-            if (t.Type == TokenType.Less || t.Type == TokenType.LessEqual || t.Type == TokenType.Greater || t.Type == TokenType.GreaterEqual)
+            if (t.Type == TokenType.Less || t.Type == TokenType.LessEqual || t.Type == TokenType.Greater || t.Type == TokenType.GreaterEqual || t.Type == TokenType.EqualEqual)
             {
                 var binopType = BinOpMap[t.Type];
                 progress();

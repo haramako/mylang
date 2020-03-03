@@ -3,7 +3,7 @@ require 'fileutils'
 require 'open3'
 require 'optparse'
 
-MY_LANG_EXE = "MyLang.exe"
+MY_LANG_EXE = ["dotnet", "MyLang/bin/Debug/netcoreapp2.1/MyLang.dll"]
 
 def run_test(test_name, testcases, cmd)
   puts "** Testing #{test_name} ..." if $verbose
@@ -53,7 +53,7 @@ def test_tokenizer
     ["(1 + 2) * 3", "( 1 + 2 ) * 3 [EOF]"], # "(", ")" に対応する
     ["< <= >= == !=", "< <= >= == != [EOF]"],
   ]
-  run_test("Tokenizer", testcases, [MY_LANG_EXE, '--tokenize', '-c'])
+  run_test("Tokenizer", testcases, [*MY_LANG_EXE, '--tokenize', '-c'])
 end
 
 
@@ -66,7 +66,7 @@ def test_parser
     ["1 + 2 + 3;", "Add( Add( 1 2 ) 3 )"],
     ["1 * 2 * 3;", "Multiply( Multiply( 1 2 ) 3 )"],
   ]
-  run_test("Parser", testcases, [MY_LANG_EXE, '--parse', '-c'])
+  run_test("Parser", testcases, [*MY_LANG_EXE, '--parse', '-c'])
 end
 
 def test_interpreter
@@ -78,12 +78,26 @@ def test_interpreter
     ["1 + 2 + 3", 6],
     ["1 * 2 * 3", 6],
   ]
-  run_test("Interpreter", testcases, [MY_LANG_EXE, '-c'])
+  run_test("Interpreter", testcases, [*MY_LANG_EXE, '-c'])
 end
 
+def test_interpreter2
+  testcases = [
+    ["let a = 1; print a;", "1"],
+    ["let a = 1; if a == 1 { print 1; } else { print 0; }", "1"],
+    ["let a = 1; if a == 0 { print 1; } else { print 0; }", "0"],
+    ["let a = 1; if a < 0 { print 1; } else { print 0; }", "0"],
+    ["let a = 1; if a > 0 { print 1; } else { print 0; }", "1"],
+  ]
+  run_test("Interpreter", testcases, [*MY_LANG_EXE, '-e'])
+end
+
+$verbose = false
 op = OptionParser.new
 op.on('v','--verbose','show log'){|v| $verbose = true }
+op.parse!
 
 test_tokenizer
 test_parser
 test_interpreter
+test_interpreter2
