@@ -82,7 +82,15 @@ namespace MyLang
             var statements = new List<Ast.Statement>();
             while(!currentToken().IsTerminate)
             {
-                statements.Add(parseStatement());
+                var statement = parseStatement();
+                if (statement != null)
+                {
+                    statements.Add(statement);
+                }
+                else
+                {
+                    throw new Exception();
+                }
             }
             return new Ast.Program(statements);
         }

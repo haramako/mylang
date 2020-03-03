@@ -2,7 +2,7 @@
   "profiles": {
     "MyLang": {
       "commandName": "Project",
-      "commandLineArgs": "-d print_format.mylang",
+      "commandLineArgs": "-d func.mylang",
       "workingDirectory": ".."
     }
   }

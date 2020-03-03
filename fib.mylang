@@ -6,4 +6,4 @@ function fib {
   }
 }
 
-print fib(28);
+print fib(10);
